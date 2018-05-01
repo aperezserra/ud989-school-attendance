@@ -28,57 +28,30 @@
 
 
 /* STUDENT APPLICATION */
-$(function() {
-    var attendance = JSON.parse(localStorage.attendance),
-        $allMissed = $('tbody .missed-col'),
-        $allCheckboxes = $('tbody input');
+(function() {
+    let attendance = JSON.parse(localStorage.attendance);  // Getting the attendance data from the Window local storage, it is stored there in JSON form.
+    let allMissed = document.querySelectorAll('tbody .missed-col');  // Getting the DOM elements that indicate ammount of missed days.
+    let allCheckboxes = document.querySelectorAll('tbody input');  // Getting an array of all the checkboxes in the DOM.
 
     // Count a student's missed days
     function countMissing() {
-        $allMissed.each(function() {
-            var studentRow = $(this).parent('tr'),
-                dayChecks = $(studentRow).children('td').children('input'),
-                numMissed = 0;
+        allMissed.forEach(function(day_mis_col_elem) {
+            let studentRow = day_mis_col_elem.parentNode;
+            let dayChecks = studentRow.querySelectorAll('td input');
+            numMissed = 0;
 
-            dayChecks.each(function() {
-                if (!$(this).prop('checked')) {
-                    numMissed++;
+            dayChecks.forEach(function(checkbox) {
+                if(!checkbox.checked) {
+                    numMissed += 1;
                 }
             });
 
-            $(this).text(numMissed);
+            day_mis_col_elem.textContent = numMissed;
         });
+
+
     }
 
-    // Check boxes, based on attendace records
-    $.each(attendance, function(name, days) {
-        var studentRow = $('tbody .name-col:contains("' + name + '")').parent('tr'),
-            dayChecks = $(studentRow).children('.attend-col').children('input');
-
-        dayChecks.each(function(i) {
-            $(this).prop('checked', days[i]);
-        });
-    });
-
-    // When a checkbox is clicked, update localStorage
-    $allCheckboxes.on('click', function() {
-        var studentRows = $('tbody .student'),
-            newAttendance = {};
-
-        studentRows.each(function() {
-            var name = $(this).children('.name-col').text(),
-                $allCheckboxes = $(this).children('td').children('input');
-
-            newAttendance[name] = [];
-
-            $allCheckboxes.each(function() {
-                newAttendance[name].push($(this).prop('checked'));
-            });
-        });
-
-        countMissing();
-        localStorage.attendance = JSON.stringify(newAttendance);
-    });
-
     countMissing();
+
 }());
