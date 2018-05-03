@@ -54,7 +54,7 @@
     Object.keys(attendance).forEach(function(name){
     let temp = document.querySelectorAll('tbody .name-col'); // I had to add this variable to imitate the jquery code.
     let studentRow = null; // Defined outsiede the for cycle for Variable Scope  accessibility
-    for(let i = 0; i < temp.length; i++) {if(temp[i].innerText === name){studentRow =temp[i].parentElement}}
+    for(let i = 0; i < temp.length; i++) {if(temp[i].innerText === name){studentRow = temp[i].parentElement}}
     let dayChecks = studentRow.querySelectorAll('.attend-col>input');
 
     dayChecks.forEach(function(item, index) {
