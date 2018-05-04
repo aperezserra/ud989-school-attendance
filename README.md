@@ -22,3 +22,5 @@ using only the DOM API with full functionality and only 6 extra lines. The
 function that generates and initial attendance was left untouched because is not
 the purpose of this exercise to tinker with it, that's the only reason why jquery
 will be left in the html code.
+
+• Step to completed the spaghetti code was ported to an MV* architecture.

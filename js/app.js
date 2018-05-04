@@ -56,11 +56,43 @@
 
             return dayAssistance;
         },
+
+        setAssistance: function(studentName, day, status) {
+            let newAttendance = model.attendance;
+
+            newAttendance[studentName][day] = status;
+            localStorage.attendance = JSON.stringify(newAttendance);
+        },
     };
 
 
     var view = {
         init: function() {
+            let studentList = control.getStudentList(); // Getting the list of the students, to easily go over it.
+            let temp = document.querySelectorAll('tbody .name-col'); // Temporary DOM element list for name filtering.
+            let studentRow = null;
+            let studentCheckboxesList = null; // DOM elements that signify the list of checkboxes for an specific user.
+
+            for (let i in studentList) {
+                let studentName = studentList[i];
+                for(let i = 0; i < temp.length; i++) {
+                    if(temp[i].innerText === studentName){
+                        studentRow = temp[i].parentElement;
+                    }
+                }
+
+                studentCheckboxesList = studentRow.querySelectorAll('.attend-col>input');
+
+                studentCheckboxesList.forEach(function(elem, index) {
+                    elem.addEventListener('click', (function(){
+                         return function() {
+                             control.setAssistance(studentName, index, elem.checked)
+                             view.render();
+                         }
+                    })());
+                });
+            }
+
             this.render();
         },
 
@@ -91,6 +123,7 @@
     };
 
     control.init();
+    control.setAssistance("Adam the Anaconda",0, false);
 
-    console.log("#############@@@@@@@@@@@@@@@@@@@#################");
+    console.log("############# APS Code Debug #################");
 }());
